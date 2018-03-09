@@ -5,7 +5,7 @@ import './Logo.css';
 export default class Logo extends Component {
   render() {
     return (
-      <div className="Logo">
+      <div className="logoContainer">
         <img src={logo} className="App-logo" alt="logo" />
         <h2 className="App-name">
           ASKAN

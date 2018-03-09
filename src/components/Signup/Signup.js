@@ -4,6 +4,7 @@ import Logo from '../Logo/Logo'
 import Button from 'material-ui/Button';
 import propTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+import { Link } from 'react-router-dom';
 
 export default class Signup extends Component {
    constructor(props) {
@@ -21,9 +22,10 @@ export default class Signup extends Component {
                <TextField className="signupInput" required label="Password" value={this.state.password}/>
                <TextField className="signupInput" required label="Password Confirmation"
                           value={this.state.passwordConfirmation}/>
-               <Button variant="raised">
+               <Button variant="raised" className="signupButton">
                   Signup
                </Button>
+               <Link to="/login" className="loginLink">Login</Link>
             </form>
          </div>
       )
