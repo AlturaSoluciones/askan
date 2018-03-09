@@ -4,6 +4,8 @@ import Login from "./components/Login/Login";
 import config from './config'
 import firebase from 'firebase';
 
+firebase.initializeApp(config);
+
 class App extends Component {
   render() {
     return (
