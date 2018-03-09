@@ -4,6 +4,18 @@
     text-align: center;
 }
 
+.loginForm {
+    width: 50%;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.loginInput {
+    display: block;
+    width: 100%;
+    margin: 20px 0px !important;
+}
+
 .signupButton, .signupLink {
     display: block;
     margin: 20px 0;

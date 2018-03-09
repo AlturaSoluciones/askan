@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import './Signup.css';
 import Logo from '../Logo/Logo'
-import Button from 'material-ui/Button';
+import { Button, TextField } from 'material-ui';
 import propTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
 import { Link } from 'react-router-dom';
 
 export default class Signup extends Component {
@@ -18,10 +17,17 @@ export default class Signup extends Component {
          <div>
             <Logo/>
             <form className="signupForm">
-               <TextField className="signupInput" required label="Email" value={this.state.email}/>
-               <TextField className="signupInput" required label="Password" value={this.state.password}/>
-               <TextField className="signupInput" required label="Password Confirmation"
-                          value={this.state.passwordConfirmation}/>
+               <TextField
+                 className="signupInput"
+                 required label="Email"
+                 value={this.state.email}/>
+               <TextField
+                 className="signupInput"
+                 required label="Password"
+                 value={this.state.password}/>
+               <TextField
+                 className="signupInput" required label="Password Confirmation"
+                 value={this.state.passwordConfirmation}/>
                <Button variant="raised" className="signupButton">
                   Signup
                </Button>
