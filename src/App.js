@@ -21,11 +21,11 @@ class App extends Component {
           <Route exact path='/' component={Login} />
           <Route
             path='/login'
-            component={Login}
+            component={ Login }
           />
           <Route
             path='/signup'
-            render={() => <Signup />}
+            component={ Signup }
           />
         </Switch>
       </Router>
