@@ -18,6 +18,11 @@ export default class Login extends Component {
     this.setState({[name]: event.target.value});
   }
 
+  gotoDashboard(e) {
+    e.preventDefault();
+    this.props.history.push('/dashboard')
+  }
+
   render() {
     return (
       <div className="loginContainer">
@@ -38,7 +43,7 @@ export default class Login extends Component {
             onChange={this.handleTextFieldChange}
             type="password"
           />
-          <Button variant="raised" className="loginButton">
+          <Button variant="raised" className="loginButton" onClick={ (e) => this.gotoDashboard(e) }>
             Login
           </Button>
         </form>
