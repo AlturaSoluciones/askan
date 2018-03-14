@@ -8,6 +8,7 @@ import firebase from 'firebase';
 
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 firebase.initializeApp(config);
 
@@ -24,6 +25,10 @@ class App extends Component {
           <Route
             path='/signup'
             component={ Signup }
+          />
+          <Route
+            path='/dashboard'
+            component={ Dashboard }
           />
         </Switch>
       </Router>
