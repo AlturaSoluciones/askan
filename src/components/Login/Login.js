@@ -3,13 +3,17 @@ import './Login.css';
 import Logo from '../Logo/Logo'
 import { Button, TextField } from 'material-ui';
 import { Link } from 'react-router-dom';
+import { auth } from '../../firebase';
+
+import * as routes from '../../constants/routes';
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: ''
     };
     this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
   }
@@ -18,8 +22,14 @@ export default class Login extends Component {
     this.setState({[name]: event.target.value});
   }
 
-  handleLogin(route) {
-    this.props.history.push(route);
+  handleLogin() {
+    auth.doSignInWithEmailAndPassword(this.state.email, this.state.password)
+      .then((authUser) => {
+        this.props.history.push(routes.DASHBOARD);
+      })
+      .catch(error => {
+        this.setState({errorMessage: error.message});
+      })
   }
 
   render() {
@@ -42,11 +52,14 @@ export default class Login extends Component {
             onChange={this.handleTextFieldChange}
             type="password"
           />
-          <Button variant="raised" className="loginButton" onClick={ () => this.handleLogin('/dashboard') }>
+          <Button variant="raised" className="loginButton" onClick={ () => this.handleLogin() }>
             Login
           </Button>
         </form>
         <Link to="/signup" className="signupLink">Signup</Link>
+        <p>
+         {this.state.errorMessage}
+        </p>
       </div>
 
      )

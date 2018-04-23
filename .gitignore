@@ -16,7 +16,12 @@
 .env.test.local
 .env.production.local
 .idea/
+INFO.txt
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+#configurations
+src/firebase/firebase.js
