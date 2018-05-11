@@ -3,14 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
 import './components/general.css';
 
-import config from './config'
-import firebase from 'firebase';
-
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/Dashboard/Dashboard";
-
-firebase.initializeApp(config);
 
 class App extends Component {
   render() {
