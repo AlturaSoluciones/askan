@@ -18,12 +18,32 @@
 }
 
 .logoContainer {
-    width: 50%;
     display: flex;
+    flex: 1;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
 }
 
 .logoContainer * {
     align-self: center;
+    margin: 0 20px;
+}
+
+.add-board {
+    margin-left: 50px;
+}
+
+.textField {
+    width: 400px;
+}
+
+.add-board > .add-board-button {
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.boards-list {
+    margin-left: 50px;
+    width: 30%;
 }
