@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 // import thunk from 'redux-thunk';
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 
 // import * as reducers from './store/reducers';
 // const store = createStore(combineReducers(reducers), applyMiddleware(thunk));
@@ -14,4 +14,3 @@ ReactDOM.render(
   <App/>,
   document.getElementById('root')
 );
-registerServiceWorker();

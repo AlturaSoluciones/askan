@@ -3,25 +3,22 @@ import './Dashboard.css';
 import Logo from '../Logo/Logo'
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase';
+import { AuthConsumer } from "../../components/Contexts/Protect";
 
 import * as routes from '../../constants/routes';
 
-export default class Login extends Component {
+export default class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      email: '',
-      password: ''
-    };
-    this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
+    console.log(localStorage.getItem('uid'));
   }
-  handleTextFieldChange(event) {
-    const name = event.target.name;
-    this.setState({[name]: event.target.value});
-  }
-  handleLogout() {
+
+  handleLogout(toggleAuth, setUid) {
     auth.doSignOut()
       .then((authUser) => {
+        toggleAuth(false);
+        setUid(null);
+        localStorage.removeItem('uid');
         this.props.history.push(routes.LANDING);
       })
       .catch(error => {
@@ -29,17 +26,33 @@ export default class Login extends Component {
       })
   }
 
+  renderRedirect(){
+    this.props.history.push(routes.LANDING);
+  }
+
   render() {
     return (
-      <div className="dashboardContainer">
-        
-        DASHBOARD TEST
-        <Logo/>
-        <Link to='#' className="logout" onClick={ () => this.handleLogout() }>
-          Logout
-        </Link>
-      </div>
+        <AuthConsumer>
+          {({ isAuth, toggleAuth, setUid }) => (
 
+            <div className="dashboardContainer">
+              DASHBOARD TEST
+
+              {isAuth ? (
+                <div>
+                 <Logo/>
+                  <Link to='#' className="logout" onClick={ () => this.handleLogout(toggleAuth, setUid) }>
+                    Logout
+                  </Link>
+                </div>
+              ) : (
+                <div>{this.renderRedirect()}</div>
+              )}
+
+            </div>
+
+            )}
+        </AuthConsumer>
      )
   }
 }
