@@ -7,10 +7,30 @@ import { AuthConsumer } from "../../components/Contexts/Protect";
 
 import * as routes from '../../constants/routes';
 
+// Material-UI imports
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
-    console.log(localStorage.getItem('uid'));
+    this.state = {
+      email: '',
+      password: '',
+    };
+    this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
+  }
+
+  handleTextFieldChange(event) {
+    const name = event.target.name;
+    this.setState({[name]: event.target.value});
   }
 
   handleLogout(toggleAuth, setUid) {

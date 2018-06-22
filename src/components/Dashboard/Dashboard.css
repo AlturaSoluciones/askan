@@ -3,3 +3,27 @@
     margin: 20px auto;
     text-align: center;
 }
+
+.root {
+    flex-grow: 1;
+}
+
+.flex {
+    flex: 1;
+}
+
+.menubutton {
+    margin-left: -12px;
+    margin-right: 20px;
+}
+
+.logoContainer {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.logoContainer * {
+    align-self: center;
+}
