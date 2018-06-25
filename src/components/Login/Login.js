@@ -41,10 +41,6 @@ export default class Login extends Component {
       });
   }
 
-  redirectToDashboard(isAuth){
-     this.props.history.push(routes.DASHBOARD);
-  }
-
   renderRedirect(){
     this.props.history.push(routes.DASHBOARD);
   }
