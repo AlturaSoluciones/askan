@@ -4,6 +4,7 @@ import Logo from '../Logo/Logo'
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase';
 import { AuthConsumer } from "../../components/Contexts/Protect";
+import { board } from '../../firebase';
 
 import * as routes from '../../constants/routes';
 
@@ -11,6 +12,8 @@ export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     console.log(localStorage.getItem('uid'));
+    // Example to create board
+    board.createBoard("1","2","nombre");
   }
 
   handleLogout(toggleAuth, setUid) {
