@@ -12,8 +12,10 @@ export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     console.log(localStorage.getItem('uid'));
-    // Example to create board
-    board.createBoard("1","2","nombre");
+    //Create example
+    //board.createBoard("Pruebafinal", "promesa").then(r => console.log(r));
+    //List Example
+    board.listBoards().then(r => console.log(r));    
   }
 
   handleLogout(toggleAuth, setUid) {
