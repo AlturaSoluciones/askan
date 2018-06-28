@@ -33,3 +33,26 @@ export const listBoards = () => {
     });
   })
 }
+
+// Delete
+export const deleteBoard = (id) => {
+  return new Promise((resolve, reject) => {
+    boardsRef.child(id).remove().then(result => {
+      resolve(true);
+    }).catch(err => {
+      reject(false);
+    });
+  })
+}
+
+// Update
+// board.updateBoard('-LG66Fp54ZNfyDhrb1j4', {name: 'UpdateName'}).then(r => console.log(r));
+export const updateBoard = (id, board) => {
+  return new Promise((resolve, reject) => {
+    boardsRef.child(id).update(board).then(result => {
+      resolve(true);
+    }).catch(err => {
+      reject(false);
+    });
+  })
+}

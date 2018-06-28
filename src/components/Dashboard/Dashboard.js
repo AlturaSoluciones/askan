@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './Dashboard.css';
 import Logo from '../Logo/Logo'
-import { Link } from 'react-router-dom';
 import { auth } from '../../firebase';
 import { AuthConsumer } from "../../components/Contexts/Protect";
 import { board } from '../../firebase';
@@ -20,27 +19,29 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       errorMessage: '',
-      boards: [
-        {
-          name: 'Board 1'
-        },
-        {
-          name: 'Board 2'
-        }
-      ],
+      boards: [],
       new_board_name: ''
     };
     this.handleChange = this.handleChange.bind(this);
     //Create example
     //board.createBoard("Pruebafinal", "promesa").then(r => console.log(r));
-    //List Example
-    board.listBoards().then(r => console.log(r));    
+  }
+
+  componentDidMount() {
+    let boardList = null;
+    // board.listBoards().then(r => this.setState({ boards: r }) );
+    board.listBoards().then(r => {
+      boardList = r;
+      boardList.map(board => board['isVisible'] = true);
+      this.setState({ boards: boardList });
+    });
   }
 
   handleLogout(toggleAuth, setUid) {
@@ -63,19 +64,79 @@ export default class Dashboard extends Component {
   };
 
   addBoard = () => {
-    this.setState({boards: [...this.state.boards, {name: this.state.new_board_name}], new_board_name: ''})
+    board.createBoard(localStorage.getItem('uid'), this.state.new_board_name).then(r => console.log(r));
+    board.listBoards().then(r => this.setState({ boards: r }) );
   };
 
-  handleEdit = (key) => {
-    console.log("edited: ", key);
+  handleEdit = (id) => {
+    console.log("edited: ", id);
+    let boards = this.state.boards;
+    let editedBoard = boards.find(function (obj) { return obj.id === id; });
+    let indexBoard = boards.indexOf(editedBoard);
+    editedBoard.isVisible = false;
+    boards[indexBoard] = editedBoard; 
+    this.setState({ boards })
   };
 
-  handleDelete = (key) => {
-    this.setState({boards: this.state.boards.filter(board => board.name !== key)});
+  handleDelete = (id) => {
+    board.deleteBoard(id).then(r =>
+      board.listBoards().then(r => this.setState({ boards: r }) )
+    );
+  };
+
+  handleSave = (id, newName) => {
+    let boards = this.state.boards;
+    let editedBoard = boards.find(function (obj) { return obj.id === id; });
+    let indexBoard = boards.indexOf(editedBoard);
+    editedBoard.isVisible = true;
+    boards[indexBoard] = editedBoard;
+    board.updateBoard(id, {name: newName}).then(r => this.setState({ boards }));
   };
 
   renderRedirect() {
     this.props.history.push(routes.LANDING);
+  }
+
+  editBoardName = id => event => {
+    let boards = this.state.boards;
+    let editedBoard = boards.find(function (obj) { return obj.id === id; });
+    let indexBoard = boards.indexOf(editedBoard);
+    editedBoard.name = event.target.value;
+    boards[indexBoard] = editedBoard; 
+    this.setState({ boards })
+  };
+
+  renderListItems = (board) => {
+    if (board.isVisible) {
+      return (
+      <div>
+        <ListItem key={board.name}>
+          <ListItemText primary={board.name}/>
+          <IconButton aria-label="Edit" onClick={() => this.handleEdit(board.id)}>
+            <EditIcon/>
+          </IconButton>
+          <IconButton>
+            <DeleteIcon onClick={() => this.handleDelete(board.name)}/>
+          </IconButton>
+        </ListItem>
+      </div>
+    );
+    } else {
+      return (
+      <div>
+        <TextField key={board.id}
+          id={'board-id-' + board.id}
+          className="boardTextField"
+          value={board.name}
+          onChange={this.editBoardName(board.id, board.name)}
+          margin="normal"
+        />
+        <IconButton>
+            <SaveIcon onClick={() => this.handleSave(board.id, board.name)}/>
+        </IconButton>
+      </div>
+    );
+    }
   }
 
   render() {
@@ -108,19 +169,9 @@ export default class Dashboard extends Component {
 
                 <div className="boards-list">
                   <List component="nav">
-                    {this.state.boards.map(board => {
-                      return (
-                        <ListItem key={board.name}>
-                          <ListItemText primary={board.name}/>
-                          <IconButton aria-label="Edit" onClick={() => this.handleEdit(board.name)}>
-                            <EditIcon/>
-                          </IconButton>
-                          <IconButton>
-                            <DeleteIcon onClick={() => this.handleDelete(board.name)}/>
-                          </IconButton>
-                        </ListItem>
-                      );
-                    })}
+                    {this.state.boards.map(board => 
+                      this.renderListItems(board)
+                    )}
                   </List>
                 </div>
               </div>

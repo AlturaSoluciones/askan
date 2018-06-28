@@ -37,6 +37,11 @@
     width: 400px;
 }
 
+.boardTextField {
+    width: 400px;
+    
+}
+
 .add-board > .add-board-button {
     margin-left: 10px;
     width: 40px;
