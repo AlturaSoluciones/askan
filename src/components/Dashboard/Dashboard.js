@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import './Dashboard.css';
 import Logo from '../Logo/Logo'
-import {auth} from '../../firebase';
-import {AuthConsumer} from "../../components/Contexts/Protect";
+import { Link } from 'react-router-dom';
+import { auth } from '../../firebase';
+import { AuthConsumer } from "../../components/Contexts/Protect";
+import { board } from '../../firebase';
 
 import * as routes from '../../constants/routes';
 
@@ -35,6 +37,10 @@ export default class Dashboard extends Component {
       new_board_name: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    //Create example
+    //board.createBoard("Pruebafinal", "promesa").then(r => console.log(r));
+    //List Example
+    board.listBoards().then(r => console.log(r));    
   }
 
   handleLogout(toggleAuth, setUid) {
