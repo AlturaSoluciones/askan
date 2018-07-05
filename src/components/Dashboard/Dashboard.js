@@ -79,9 +79,14 @@ export default class Dashboard extends Component {
   };
 
   handleDelete = (id) => {
-    board.deleteBoard(id).then(r =>
-      board.listBoards().then(r => this.setState({ boards: r }) )
-    );
+    board.deleteBoard(id).then(r => {
+      let boardList = null;
+       board.listBoards().then(r => {
+        boardList = r;
+        boardList.map(board => board['isVisible'] = true);
+        this.setState({ boards: boardList });
+      });
+    });
   };
 
   handleSave = (id, newName) => {
@@ -116,7 +121,7 @@ export default class Dashboard extends Component {
             <EditIcon/>
           </IconButton>
           <IconButton>
-            <DeleteIcon onClick={() => this.handleDelete(board.name)}/>
+            <DeleteIcon onClick={() => this.handleDelete(board.id)}/>
           </IconButton>
         </ListItem>
       </div>
