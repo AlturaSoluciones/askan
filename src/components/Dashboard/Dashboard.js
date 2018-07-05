@@ -30,8 +30,6 @@ export default class Dashboard extends Component {
       new_board_name: ''
     };
     this.handleChange = this.handleChange.bind(this);
-    //Create example
-    //board.createBoard("Pruebafinal", "promesa").then(r => console.log(r));
   }
 
   componentDidMount() {
@@ -65,7 +63,11 @@ export default class Dashboard extends Component {
 
   addBoard = () => {
     board.createBoard(localStorage.getItem('uid'), this.state.new_board_name).then(r => console.log(r));
-    board.listBoards().then(r => this.setState({ boards: r }) );
+    board.listBoards().then(r => {
+      let boardList = r;
+      boardList.map(board => board['isVisible'] = true);
+      this.setState({ boards: boardList });
+    });
   };
 
   handleEdit = (id) => {
