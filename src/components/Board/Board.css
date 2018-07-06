@@ -1,0 +1,62 @@
+.boardContainer {
+    width: 100%;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.boardHeader {
+    width: 100%;
+    margin: 20px auto;
+    text-align: left;
+    margin-left: 50px;
+    color: #3f51b5;
+}
+
+.root {
+    flex-grow: 1;
+}
+
+.flex {
+    flex: 1;
+}
+
+.menubutton {
+    margin-left: -12px;
+    margin-right: 20px;
+}
+
+.logoContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.logoContainer * {
+    align-self: center;
+    margin: 0 20px;
+}
+
+.add-board {
+    margin-left: 50px;
+}
+
+.textField {
+    width: 400px;
+}
+
+.boardTextField {
+    width: 400px;
+    
+}
+
+.add-board > .add-board-button {
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.boards-list {
+    margin-left: 50px;
+    width: 30%;
+}

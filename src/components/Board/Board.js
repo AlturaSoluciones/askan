@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import './Dashboard.css';
+import './Board.css';
 import Logo from '../Logo/Logo'
 import { auth } from '../../firebase';
 import { AuthConsumer } from "../../components/Contexts/Protect";
@@ -21,7 +21,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 
-export default class Dashboard extends Component {
+export default class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -100,7 +100,6 @@ export default class Dashboard extends Component {
   };
 
   renderRedirect() {
-
     this.props.history.push(routes.LANDING);
   }
 
@@ -113,19 +112,14 @@ export default class Dashboard extends Component {
     this.setState({ boards })
   };
 
-  handleListItem = (board, setBoard) => {
-    setBoard(board);
-    this.props.history.push(routes.BOARD);
-  }
-  
-    renderListItems = (board, setBoard) => {
-      if (board.isVisible) {
-        return (
-        <div key={board.id}>
-          <ListItem>
-            <ListItemText primary={board.name} onClick={() => this.handleListItem(board, setBoard)} />
-            <IconButton aria-label="Edit" onClick={() => this.handleEdit(board.id)}>
-              <EditIcon/>
+  renderListItems = (board) => {
+    if (board.isVisible) {
+      return (
+      <div>
+        <ListItem key={board.name}>
+          <ListItemText primary={board.name}/>
+          <IconButton aria-label="Edit" onClick={() => this.handleEdit(board.id)}>
+            <EditIcon/>
           </IconButton>
           <IconButton>
             <DeleteIcon onClick={() => this.handleDelete(board.id)}/>
@@ -135,8 +129,8 @@ export default class Dashboard extends Component {
     );
     } else {
       return (
-      <div key={'d-' + board.id}>
-        <TextField key={'tf-' + board.id}
+      <div>
+        <TextField key={board.id}
           id={'board-id-' + board.id}
           className="boardTextField"
           value={board.name}
@@ -149,12 +143,17 @@ export default class Dashboard extends Component {
       </div>
     );
     }
+  };
+
+  renderBoardHeaders = (board) =>{
+    return board.name
+    
   }
 
   render() {
     return (
       <AuthConsumer>
-        {({isAuth, toggleAuth, setUid, setBoard}) => (
+        {({isAuth, toggleAuth, setUid, board}) => (
           <div className="root">
             {isAuth ? (
               <div>
@@ -164,10 +163,13 @@ export default class Dashboard extends Component {
                     <Button color="inherit" onClick={() => this.handleLogout(toggleAuth, setUid)}>Logout</Button>
                   </Toolbar>
                 </AppBar>
+                <div className="boardHeader">
+                  { this.renderBoardHeaders(board) }
+                </div>
                 <div className="add-board">
                   < TextField
                     id="add-board-text"
-                    label="Board Name"
+                    label="List Name"
                     className="textField"
                     value={this.state.new_board_name}
                     onChange={this.handleChange('new_board_name')}
@@ -181,9 +183,7 @@ export default class Dashboard extends Component {
 
                 <div className="boards-list">
                   <List component="nav">
-                    {this.state.boards.map(board => 
-                      this.renderListItems(board, setBoard)
-                    )}
+                    test
                   </List>
                 </div>
               </div>
