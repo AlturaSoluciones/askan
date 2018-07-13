@@ -64,7 +64,7 @@ export default class Dashboard extends Component {
 
   addBoard = () => {
     board.createBoard(this.state.uid, this.state.new_board_name).then(r => console.log(r));
-    board.listBoards().then(r => {
+    board.listBoardsByOwner(this.state.uid).then(r => {
       let boardList = r;
       boardList.map(board => board['isVisible'] = true);
       this.setState({ boards: boardList });
@@ -83,7 +83,7 @@ export default class Dashboard extends Component {
   handleDelete = (id) => {
     board.deleteBoard(id).then(r => {
       let boardList = null;
-       board.listBoards().then(r => {
+       board.listBoardsByOwner(this.state.uid).then(r => {
         boardList = r;
         boardList.map(board => board['isVisible'] = true);
         this.setState({ boards: boardList });
