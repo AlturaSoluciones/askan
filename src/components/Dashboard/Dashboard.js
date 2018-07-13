@@ -33,8 +33,10 @@ export default class Dashboard extends Component {
   }
 
   componentDidMount() {
+    var localUid = localStorage.getItem('uid')
+    this.setState({ uid: localUid });
     let boardList = null;
-    board.listBoards().then(r => {
+    board.listBoardsByOwner(localUid).then(r => {
       boardList = r;
       boardList.map(board => board['isVisible'] = true);
       this.setState({ boards: boardList });
@@ -61,7 +63,7 @@ export default class Dashboard extends Component {
   };
 
   addBoard = () => {
-    board.createBoard(localStorage.getItem('uid'), this.state.new_board_name).then(r => console.log(r));
+    board.createBoard(this.state.uid, this.state.new_board_name).then(r => console.log(r));
     board.listBoards().then(r => {
       let boardList = r;
       boardList.map(board => board['isVisible'] = true);
@@ -70,7 +72,6 @@ export default class Dashboard extends Component {
   };
 
   handleEdit = (id) => {
-    console.log("edited: ", id);
     let boards = this.state.boards;
     let editedBoard = boards.find(function (obj) { return obj.id === id; });
     let indexBoard = boards.indexOf(editedBoard);
@@ -100,7 +101,6 @@ export default class Dashboard extends Component {
   };
 
   renderRedirect() {
-
     this.props.history.push(routes.LANDING);
   }
 
@@ -118,36 +118,36 @@ export default class Dashboard extends Component {
     this.props.history.push(routes.BOARD);
   }
   
-    renderListItems = (board, setBoard) => {
-      if (board.isVisible) {
-        return (
-        <div key={board.id}>
-          <ListItem>
-            <ListItemText primary={board.name} onClick={() => this.handleListItem(board, setBoard)} />
-            <IconButton aria-label="Edit" onClick={() => this.handleEdit(board.id)}>
-              <EditIcon/>
-          </IconButton>
-          <IconButton>
-            <DeleteIcon onClick={() => this.handleDelete(board.id)}/>
-          </IconButton>
-        </ListItem>
-      </div>
-    );
-    } else {
+  renderListItems = (board, setBoard) => {
+    if (board.isVisible) {
       return (
-      <div key={'d-' + board.id}>
-        <TextField key={'tf-' + board.id}
-          id={'board-id-' + board.id}
-          className="boardTextField"
-          value={board.name}
-          onChange={this.editBoardName(board.id, board.name)}
-          margin="normal"
-        />
-        <IconButton>
-            <SaveIcon onClick={() => this.handleSave(board.id, board.name)}/>
+      <div key={board.id}>
+        <ListItem>
+          <ListItemText primary={board.name} onClick={() => this.handleListItem(board, setBoard)} />
+          <IconButton aria-label="Edit" onClick={() => this.handleEdit(board.id)}>
+            <EditIcon/>
         </IconButton>
-      </div>
-    );
+        <IconButton>
+          <DeleteIcon onClick={() => this.handleDelete(board.id)}/>
+        </IconButton>
+      </ListItem>
+    </div>
+  );
+  } else {
+      return (
+        <div key={'d-' + board.id}>
+          <TextField key={'tf-' + board.id}
+            id={'board-id-' + board.id}
+            className="boardTextField"
+            value={board.name}
+            onChange={this.editBoardName(board.id, board.name)}
+            margin="normal"
+          />
+          <IconButton>
+              <SaveIcon onClick={() => this.handleSave(board.id, board.name)}/>
+          </IconButton>
+        </div>
+      );
     }
   }
 

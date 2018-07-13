@@ -34,6 +34,25 @@ export const listBoards = () => {
   })
 }
 
+// List by owner
+export const listBoardsByOwner = (ownerId) => {
+  return new Promise((resolve, reject) => {
+    var listBoards = [];
+    dbRef.child('boards').once('value', function (snapshot) {
+      snapshot.forEach(function (child) {
+        if (child.val().ownerId === ownerId){
+          listBoards.push({
+            id: child.key,
+            ownerId: child.val().ownerId,
+            name: child.val().name
+          });
+        }
+      });
+      resolve(listBoards);
+    });
+  })
+}
+
 // Delete
 export const deleteBoard = (id) => {
   return new Promise((resolve, reject) => {
