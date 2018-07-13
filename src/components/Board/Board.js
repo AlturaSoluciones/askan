@@ -4,6 +4,7 @@ import Logo from '../Logo/Logo'
 import { auth } from '../../firebase';
 import { AuthConsumer } from "../../components/Contexts/Protect";
 import { board } from '../../firebase';
+import { heap } from '../../firebase';
 
 import * as routes from '../../constants/routes';
 
@@ -26,19 +27,21 @@ export default class Board extends Component {
     super(props);
     this.state = {
       errorMessage: '',
-      boards: [],
-      new_board_name: ''
+      boardLists: [],
+      new_item_name: ''
     };
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    let boardList = null;
-    board.listBoards().then(r => {
-      boardList = r;
-      boardList.map(board => board['isVisible'] = true);
-      this.setState({ boards: boardList });
-    });
+    // let heapList = null;
+    // console.log('xxxxxx');
+    // // console.log(this.state.board.name);
+    // board.listBoards().then(r => {
+    //   boardList = r;
+    //   boardList.map(board => board['isVisible'] = true);
+    //   this.setState({ boards: boardList });
+    // });
   }
 
   handleLogout(toggleAuth, setUid) {
@@ -54,19 +57,19 @@ export default class Board extends Component {
       })
   }
 
-  handleChange = name => event => {
+  handleChange = event => {
     this.setState({
-      [name]: event.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 
-  addBoard = () => {
-    board.createBoard(localStorage.getItem('uid'), this.state.new_board_name).then(r => console.log(r));
-    board.listBoards().then(r => {
-      let boardList = r;
-      boardList.map(board => board['isVisible'] = true);
-      this.setState({ boards: boardList });
+  addList = (board) => {
+    heap.createHeap(board.id, this.state.new_item_name).then(r => console.log(r));
+    let boardLists = [];
+    boardLists = heap.listHeaps(board.id).then(r => {
+      console.log(r);
     });
+
   };
 
   handleEdit = (id) => {
@@ -112,42 +115,17 @@ export default class Board extends Component {
     this.setState({ boards })
   };
 
-  renderListItems = (board) => {
-    if (board.isVisible) {
-      return (
-      <div>
-        <ListItem key={board.name}>
-          <ListItemText primary={board.name}/>
-          <IconButton aria-label="Edit" onClick={() => this.handleEdit(board.id)}>
-            <EditIcon/>
-          </IconButton>
-          <IconButton>
-            <DeleteIcon onClick={() => this.handleDelete(board.id)}/>
-          </IconButton>
-        </ListItem>
-      </div>
-    );
-    } else {
-      return (
-      <div>
-        <TextField key={board.id}
-          id={'board-id-' + board.id}
-          className="boardTextField"
-          value={board.name}
-          onChange={this.editBoardName(board.id, board.name)}
-          margin="normal"
-        />
-        <IconButton>
-            <SaveIcon onClick={() => this.handleSave(board.id, board.name)}/>
-        </IconButton>
-      </div>
-    );
-    }
-  };
 
+  renderHeaps = (board) => {
+    let boardLists = [];
+    // boardLists = heap.listHeaps(board.id).then(r => {
+    //   console.log(r);
+    // });
+  }
+
+  
   renderBoardHeaders = (board) =>{
     return board.name
-    
   }
 
   render() {
@@ -167,23 +145,24 @@ export default class Board extends Component {
                   { this.renderBoardHeaders(board) }
                 </div>
                 <div className="add-board">
-                  < TextField
+                  <TextField
                     id="add-board-text"
                     label="List Name"
                     className="textField"
-                    value={this.state.new_board_name}
-                    onChange={this.handleChange('new_board_name')}
+                    value={this.state.new_item_name}
+                    onChange={this.handleChange}
+                    name='new_item_name'
                     margin="normal"
                   />
                   <Button variant="fab" color="primary" aria-label="add" className="add-board-button"
-                          onClick={this.addBoard}>
+                          onClick={() => this.addList(board)}>
                     <AddIcon/>
                   </Button>
                 </div>
 
                 <div className="boards-list">
                   <List component="nav">
-                    test
+                    { this.renderHeaps(board) }
                   </List>
                 </div>
               </div>
