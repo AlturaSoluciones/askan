@@ -30,18 +30,17 @@ export default class Board extends Component {
       boardLists: [],
       new_item_name: ''
     };
-    // this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    // let heapList = null;
-    // console.log('xxxxxx');
-    // // console.log(this.state.board.name);
-    // board.listBoards().then(r => {
-    //   boardList = r;
-    //   boardList.map(board => board['isVisible'] = true);
-    //   this.setState({ boards: boardList });
-    // });
+    let board = this.props.location.state.board;
+    console.log
+    let boardLists = null;
+    boardLists = heap.listHeaps(board.id).then(r => {
+      boardLists = r;
+      boardLists.map(list => list['isVisible'] = true);
+      this.setState({ boardLists })
+    })
   }
 
   handleLogout(toggleAuth, setUid) {
@@ -73,7 +72,6 @@ export default class Board extends Component {
   };
 
   handleEdit = (id) => {
-    console.log("edited: ", id);
     let boards = this.state.boards;
     let editedBoard = boards.find(function (obj) { return obj.id === id; });
     let indexBoard = boards.indexOf(editedBoard);
@@ -115,14 +113,31 @@ export default class Board extends Component {
     this.setState({ boards })
   };
 
+  renderListItems = (list) => {
+    console.log(list.name);
+    return(
+      <div key={list.id}>
+        <ListItem>
+          { console.log('en list item') }
+          <ListItemText primary={list.name} />
+        </ListItem>
+      </div>
+    );
+  }
 
   renderHeaps = (board) => {
     let boardLists = [];
-    // boardLists = heap.listHeaps(board.id).then(r => {
-    //   console.log(r);
-    // });
-  }
-
+    boardLists = this.state.boardLists;
+    boardLists.map(list => list['isVisible'] = true);
+    return (
+      <List component="nav">
+        {
+          boardLists.map(list =>
+            this.renderListItems(list)
+        )}
+      </List>
+    )
+  };
   
   renderBoardHeaders = (board) =>{
     return board.name
@@ -161,9 +176,7 @@ export default class Board extends Component {
                 </div>
 
                 <div className="boards-list">
-                  <List component="nav">
-                    { this.renderHeaps(board) }
-                  </List>
+                  { this.renderHeaps(board) }
                 </div>
               </div>
             ) : (
