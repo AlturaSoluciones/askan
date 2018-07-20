@@ -12,10 +12,6 @@ class AuthProvider extends Component {
     },
     setUid: (uid) => {
       this.setState({uid: uid})
-    },
-    board: null,
-    setBoard: (board) => {
-      this.setState({ board })
     }
   }
 

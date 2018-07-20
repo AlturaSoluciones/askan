@@ -27,6 +27,7 @@ export default class Board extends Component {
     super(props);
     this.state = {
       errorMessage: '',
+      board: null,
       boardLists: [],
       new_item_name: ''
     };
@@ -34,7 +35,7 @@ export default class Board extends Component {
 
   componentDidMount() {
     let board = this.props.location.state.board;
-    console.log
+    this.setState({ board });
     let boardLists = null;
     boardLists = heap.listHeaps(board.id).then(r => {
       boardLists = r;
@@ -139,14 +140,14 @@ export default class Board extends Component {
     )
   };
   
-  renderBoardHeaders = (board) =>{
+  renderBoardHeaders = () =>{
     return board.name
   }
 
   render() {
     return (
       <AuthConsumer>
-        {({isAuth, toggleAuth, setUid, board}) => (
+        {({isAuth, toggleAuth, setUid}) => (
           <div className="root">
             {isAuth ? (
               <div>
@@ -157,7 +158,7 @@ export default class Board extends Component {
                   </Toolbar>
                 </AppBar>
                 <div className="boardHeader">
-                  { this.renderBoardHeaders(board) }
+                  { this.renderBoardHeaders() }
                 </div>
                 <div className="add-board">
                   <TextField

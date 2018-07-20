@@ -113,17 +113,16 @@ export default class Dashboard extends Component {
     this.setState({ boards })
   };
 
-  handleListItem = (board, setBoard) => {
-    setBoard(board);
+  handleListItem = (board) => {
     this.props.history.push(routes.BOARD, {board: board});
   }
   
-  renderListItems = (board, setBoard) => {
+  renderListItems = (board) => {
     if (board.isVisible) {
       return (
       <div key={board.id}>
         <ListItem>
-          <ListItemText primary={board.name} onClick={() => this.handleListItem(board, setBoard)} />
+          <ListItemText primary={board.name} onClick={() => this.handleListItem(board)} />
           <IconButton aria-label="Edit" onClick={() => this.handleEdit(board.id)}>
             <EditIcon/>
         </IconButton>
@@ -154,7 +153,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <AuthConsumer>
-        {({isAuth, toggleAuth, setUid, setBoard}) => (
+        {({isAuth, toggleAuth, setUid}) => (
           <div className="root">
             {isAuth ? (
               <div>
@@ -181,9 +180,7 @@ export default class Dashboard extends Component {
 
                 <div className="boards-list">
                   <List component="nav">
-                    {this.state.boards.map(board => 
-                      this.renderListItems(board, setBoard)
-                    )}
+                    { this.state.boards.map(board => this.renderListItems(board)) }
                   </List>
                 </div>
               </div>
