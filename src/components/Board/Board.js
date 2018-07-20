@@ -63,11 +63,14 @@ export default class Board extends Component {
     });
   };
 
-  addList = (board) => {
+  addList = () => {
+    let board = this.state.board;
     heap.createHeap(board.id, this.state.new_item_name).then(r => console.log(r));
     let boardLists = [];
     boardLists = heap.listHeaps(board.id).then(r => {
-      console.log(r);
+      boardLists = r;
+      boardLists.map(list => list['isVisible'] = true);
+      this.setState({ boardLists })
     });
 
   };
@@ -115,11 +118,9 @@ export default class Board extends Component {
   };
 
   renderListItems = (list) => {
-    console.log(list.name);
     return(
       <div key={list.id}>
         <ListItem>
-          { console.log('en list item') }
           <ListItemText primary={list.name} />
         </ListItem>
       </div>
@@ -141,7 +142,7 @@ export default class Board extends Component {
   };
   
   renderBoardHeaders = () =>{
-    return board.name
+    return this.props.location.state.board.name
   }
 
   render() {
@@ -171,7 +172,7 @@ export default class Board extends Component {
                     margin="normal"
                   />
                   <Button variant="fab" color="primary" aria-label="add" className="add-board-button"
-                          onClick={() => this.addList(board)}>
+                          onClick={() => this.addList()}>
                     <AddIcon/>
                   </Button>
                 </div>
