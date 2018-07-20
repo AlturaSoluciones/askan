@@ -85,12 +85,13 @@ export default class Board extends Component {
   };
 
   handleDelete = (id) => {
-    board.deleteBoard(id).then(r => {
-      let boardList = null;
-       board.listBoards().then(r => {
-        boardList = r;
-        boardList.map(board => board['isVisible'] = true);
-        this.setState({ boards: boardList });
+    let board = this.state.board;
+    heap.deleteHeap(board.id, id).then(r => {
+      let boardLists = [];
+      boardLists = heap.listHeaps(board.id).then(r => {
+        boardLists = r;
+        boardLists.map(list => list['isVisible'] = true);
+        this.setState({ boardLists })
       });
     });
   };
@@ -122,6 +123,9 @@ export default class Board extends Component {
       <div key={list.id}>
         <ListItem>
           <ListItemText primary={list.name} />
+          <IconButton>
+            <DeleteIcon onClick={() => this.handleDelete(list.id)}/>
+          </IconButton>
         </ListItem>
       </div>
     );
