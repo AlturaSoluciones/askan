@@ -72,16 +72,15 @@ export default class Board extends Component {
       boardLists.map(list => list['isVisible'] = true);
       this.setState({ boardLists })
     });
-
   };
 
   handleEdit = (id) => {
-    let boards = this.state.boards;
-    let editedBoard = boards.find(function (obj) { return obj.id === id; });
-    let indexBoard = boards.indexOf(editedBoard);
-    editedBoard.isVisible = false;
-    boards[indexBoard] = editedBoard; 
-    this.setState({ boards })
+    let boardLists = this.state.boardLists;
+    let list = boardLists.find(function (obj) { return obj.id === id; });
+    let listIndex = boardLists.indexOf(list);
+    list['isVisible'] = false;
+    boardLists[listIndex] = list;
+    this.setState({ boardLists });
   };
 
   handleDelete = (id) => {
@@ -97,44 +96,64 @@ export default class Board extends Component {
   };
 
   handleSave = (id, newName) => {
-    let boards = this.state.boards;
-    let editedBoard = boards.find(function (obj) { return obj.id === id; });
-    let indexBoard = boards.indexOf(editedBoard);
-    editedBoard.isVisible = true;
-    boards[indexBoard] = editedBoard;
-    board.updateBoard(id, {name: newName}).then(r => this.setState({ boards }));
+    let board = this.state.board;
+    let boardLists = this.state.boardLists;
+    let edited = boardLists.find(function (obj) { return obj.id === id; });
+    let index = boardLists.indexOf(edited);
+    edited.isVisible = true;
+    boardLists[index] = edited;
+    heap.updateHeap(board.id, edited.id, {name: newName}).then(r => this.setState({ boardLists }));
   };
 
   renderRedirect() {
     this.props.history.push(routes.LANDING);
   }
 
-  editBoardName = id => event => {
-    let boards = this.state.boards;
-    let editedBoard = boards.find(function (obj) { return obj.id === id; });
-    let indexBoard = boards.indexOf(editedBoard);
-    editedBoard.name = event.target.value;
-    boards[indexBoard] = editedBoard; 
-    this.setState({ boards })
+  editListName = id => event => {
+    let boardLists = this.state.boardLists;
+    let edited = boardLists.find(function (obj) { return obj.id === id; });
+    let index = boardLists.indexOf(edited);
+    edited.name = event.target.value;
+    boardLists[index] = edited;
+    this.setState({ boardLists })
   };
 
   renderListItems = (list) => {
-    return(
-      <div key={list.id}>
-        <ListItem>
-          <ListItemText primary={list.name} />
+    if (list.isVisible) {
+      return(
+        <div key={list.id}>
+          <ListItem>
+            <ListItemText primary={list.name} />
+            <IconButton aria-label="Edit" onClick={() => this.handleEdit(list.id)}>
+              <EditIcon/>
+            </IconButton>
+            <IconButton>
+              <DeleteIcon onClick={() => this.handleDelete(list.id)}/>
+            </IconButton>
+          </ListItem>
+        </div>
+      );
+    } else {
+      return(
+        <div key={'l-' + list.id}>
+          <TextField key={'tf-' + list.id}
+            id={'list-id-' + list.id}
+            className="listTextField"
+            value={list.name}
+            onChange={this.editListName(list.id)}
+            margin="normal"
+          />
           <IconButton>
-            <DeleteIcon onClick={() => this.handleDelete(list.id)}/>
+              <SaveIcon onClick={() => this.handleSave(list.id, list.name)}/>
           </IconButton>
-        </ListItem>
-      </div>
-    );
+        </div>
+      );
+    } 
   }
 
   renderHeaps = (board) => {
     let boardLists = [];
     boardLists = this.state.boardLists;
-    boardLists.map(list => list['isVisible'] = true);
     return (
       <List component="nav">
         {
