@@ -34,6 +34,25 @@ export const listBoards = () => {
   })
 }
 
+// Get board by id
+export const getById = (boardId) => {
+  return new Promise((resolve, reject) => {
+    var listBoards = [];
+    boardsRef.once('value', function (snapshot) {
+      snapshot.forEach(function (child) {
+        if (child.key === boardId) {
+          listBoards.push({
+            id: child.key,
+            ownerId: child.val().ownerId,
+            name: child.val().name
+          });
+        }
+      });
+      resolve(listBoards[0]);
+    });
+  })
+}
+
 // List by owner
 export const listBoardsByOwner = (ownerId) => {
   return new Promise((resolve, reject) => {

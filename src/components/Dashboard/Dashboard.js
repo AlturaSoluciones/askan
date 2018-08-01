@@ -114,7 +114,7 @@ export default class Dashboard extends Component {
   };
 
   handleListItem = (board) => {
-    this.props.history.push(routes.BOARD, {board: board});
+    this.props.history.push(routes.BOARD + '/' + board.id, {board: board});
   }
   
   renderListItems = (board) => {

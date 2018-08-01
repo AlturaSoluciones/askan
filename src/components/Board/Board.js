@@ -33,15 +33,18 @@ export default class Board extends Component {
     };
   }
 
-  componentDidMount() {
-    let board = this.props.location.state.board;
-    this.setState({ board });
-    let boardLists = null;
-    boardLists = heap.listHeaps(board.id).then(r => {
-      boardLists = r;
-      boardLists.map(list => list['isVisible'] = true);
-      this.setState({ boardLists })
-    })
+  componentWillMount() {
+    let boardId = this.props.location.pathname.split(/\/board\//)[1];
+    board.getById(boardId).then(r => {
+      let board = r;
+      this.setState({ board });
+      let boardLists = null;
+      boardLists = heap.listHeaps(board.id).then(r => {
+        boardLists = r;
+        boardLists.map(list => list['isVisible'] = true);
+        this.setState({ boardLists })
+      })
+    });
   }
 
   handleLogout(toggleAuth, setUid) {

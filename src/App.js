@@ -32,6 +32,10 @@ class App extends Component {
               path='/board'
               component={ Board }
             />
+            <Route
+              path='/board/:id'
+              component={ Board }
+            />
           </Switch>
         </Router>
       </AuthProvider>
