@@ -158,7 +158,7 @@ export default class Board extends Component {
     let boardLists = [];
     boardLists = this.state.boardLists;
     return (
-      <List component="nav">
+      <List component="nav" className="list-nav">
         {
           boardLists.map(list =>
             this.renderListItems(list)
