@@ -34,7 +34,7 @@ export default class Board extends Component {
   }
 
   componentWillMount() {
-    let boardId = this.props.location.pathname.split(/\/board\//)[1];
+    let boardId = this.props.match.params.board_id;
     board.getById(boardId).then(r => {
       let board = r;
       this.setState({ board });

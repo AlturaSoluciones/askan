@@ -29,11 +29,7 @@ class App extends Component {
               component={ Dashboard }
             />
             <Route
-              path='/board'
-              component={ Board }
-            />
-            <Route
-              path='/board/:id'
+              path='/board/:board_id'
               component={ Board }
             />
           </Switch>
