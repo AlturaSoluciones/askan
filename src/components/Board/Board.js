@@ -39,11 +39,13 @@ export default class Board extends Component {
       let board = r;
       this.setState({ board });
       let boardLists = null;
-      boardLists = heap.listHeaps(board.id).then(r => {
-        boardLists = r;
-        boardLists.map(list => list['isVisible'] = true);
-        this.setState({ boardLists })
-      })
+      if(board.id){
+        boardLists = heap.listHeaps(board.id).then(r => {
+          boardLists = r;
+          boardLists.map(list => list['isVisible'] = true);
+          this.setState({ boardLists })
+        })
+      }
     });
   }
 
