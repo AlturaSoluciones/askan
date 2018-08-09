@@ -33,13 +33,18 @@ export default class Dashboard extends Component {
   }
 
   componentDidMount() {
-    var localUid = localStorage.getItem('uid')
-    this.setState({ uid: localUid });
-    let boardList = null;
-    board.listBoardsByOwner(localUid).then(r => {
-      boardList = r;
-      boardList.map(board => board['isVisible'] = true);
-      this.setState({ boards: boardList });
+    var localUid = localStorage.getItem('uid');
+    if(!localUid){
+      window.location.reload();  
+    }
+    
+    this.setState({ uid: localUid }, () => {
+      let boardList = null;
+      board.listBoardsByOwner(localUid).then(r => {
+        boardList = r;
+        boardList.map(board => board['isVisible'] = true);
+        this.setState({ boards: boardList });
+      });
     });
   }
 
