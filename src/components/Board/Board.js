@@ -126,7 +126,7 @@ export default class Board extends Component {
   renderListItems = (list) => {
     if (list.isVisible) {
       return(
-        <div key={list.id}>
+        <div key={list.id} className="listContainer">
           <ListItem>
             <ListItemText primary={list.name} />
             <IconButton aria-label="Edit" onClick={() => this.handleEdit(list.id)}>
@@ -140,7 +140,7 @@ export default class Board extends Component {
       );
     } else {
       return(
-        <div key={'l-' + list.id}>
+        <div key={'l-' + list.id} className="listContainer">
           <TextField key={'tf-' + list.id}
             id={'list-id-' + list.id}
             className="listTextField"
