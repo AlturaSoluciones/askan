@@ -27,4 +27,10 @@
   border-color: black;
   border-width: 1px;
   margin: 5px;
+  height: 400px !important;
+}
+
+.titleList {
+  float: both;
+  text-align: left;
 }

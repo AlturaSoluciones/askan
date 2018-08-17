@@ -128,13 +128,15 @@ export default class Board extends Component {
       return(
         <div key={list.id} className="listContainer">
           <ListItem>
-            <ListItemText primary={list.name} />
-            <IconButton aria-label="Edit" onClick={() => this.handleEdit(list.id)}>
-              <EditIcon/>
-            </IconButton>
-            <IconButton>
-              <DeleteIcon onClick={() => this.handleDelete(list.id)}/>
-            </IconButton>
+            <div>
+              <IconButton aria-label="Edit" onClick={() => this.handleEdit(list.id)}>
+                <EditIcon/>
+              </IconButton>
+              <IconButton>
+                <DeleteIcon onClick={() => this.handleDelete(list.id)}/>
+              </IconButton>
+              <ListItemText primary={list.name} className='titleList' />
+            </div>
           </ListItem>
         </div>
       );
