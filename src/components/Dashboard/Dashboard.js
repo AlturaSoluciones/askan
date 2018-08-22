@@ -46,6 +46,7 @@ export default class Dashboard extends Component {
         this.setState({ boards: boardList });
       });
     });
+    localStorage.setItem('currentPath', this.props.location.pathname);
   }
 
   handleLogout(toggleAuth, setUid) {

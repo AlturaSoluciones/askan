@@ -49,6 +49,10 @@ export default class Board extends Component {
     });
   }
 
+  componentDidMount() {
+    localStorage.setItem('currentPath', this.props.location.pathname);
+  }
+
   handleLogout(toggleAuth, setUid) {
     auth.doSignOut()
       .then(() => {
@@ -172,7 +176,7 @@ export default class Board extends Component {
   };
   
   renderBoardHeaders = () =>{
-    return this.props.location.state.board.name
+    return this.state.board && this.state.board.name;
   }
 
   render() {

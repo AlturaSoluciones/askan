@@ -42,7 +42,13 @@ export default class Login extends Component {
   }
 
   renderRedirect(){
-    this.props.history.push(routes.DASHBOARD);
+    var currentPath = localStorage.getItem('currentPath');
+    if (currentPath) {
+      localStorage.removeItem('currentPath');
+      this.props.history.push(currentPath)
+    } else {
+      this.props.history.push(routes.DASHBOARD);
+    }
   }
 
   render() {
