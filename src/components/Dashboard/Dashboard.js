@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './Dashboard.css';
 import Logo from '../Logo/Logo'
 import { auth } from '../../firebase';
-import { AuthConsumer } from "../../components/Contexts/Protect";
 import { board } from '../../firebase';
 
 import * as routes from '../../constants/routes';
@@ -44,9 +43,17 @@ export default class Dashboard extends Component {
         boardList = r;
         boardList.map(board => board['isVisible'] = true);
         this.setState({ boards: boardList });
+        if (!this.props.auth.isAuth){
+          localStorage.removeItem('currentPath');
+          this.renderRedirect();
+        }
       });
     });
     localStorage.setItem('currentPath', this.props.location.pathname);
+    if (!this.props.auth.isAuth){
+          localStorage.removeItem('currentPath');
+          this.renderRedirect();
+        }
   }
 
   handleLogout(toggleAuth, setUid) {
@@ -157,45 +164,40 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    return (
-      <AuthConsumer>
-        {({isAuth, toggleAuth, setUid}) => (
-          <div className="root">
-            {isAuth ? (
-              <div>
-                <AppBar position="static">
-                  <Toolbar>
-                    <Logo/>
-                    <Button color="inherit" onClick={() => this.handleLogout(toggleAuth, setUid)}>Logout</Button>
-                  </Toolbar>
-                </AppBar>
-                <div className="add-board">
-                  < TextField
-                    id="add-board-text"
-                    label="Board Name"
-                    className="textField"
-                    value={this.state.new_board_name}
-                    onChange={this.handleChange('new_board_name')}
-                    margin="normal"
-                  />
-                  <Button variant="fab" color="primary" aria-label="add" className="add-board-button"
-                          onClick={this.addBoard}>
-                    <AddIcon/>
-                  </Button>
-                </div>
-
-                <div className="boards-list">
-                  <List component="nav">
-                    { this.state.boards.map(board => this.renderListItems(board)) }
-                  </List>
-                </div>
-              </div>
-            ) : (
-              <div>{this.renderRedirect()}</div>
-            )}
+    if (this.props.auth.isAuth) {
+      return (
+        <div>
+          <AppBar position="static">
+            <Toolbar>
+              <Logo/>
+              <Button color="inherit" onClick={() => this.handleLogout(this.props.auth.toggleAuth, this.props.auth.setUid)}>Logout</Button>
+            </Toolbar>
+          </AppBar>
+          <div className="add-board">
+            < TextField
+              id="add-board-text"
+              label="Board Name"
+              className="textField"
+              value={this.state.new_board_name}
+              onChange={this.handleChange('new_board_name')}
+              margin="normal"
+            />
+            <Button variant="fab" color="primary" aria-label="add" className="add-board-button"
+                    onClick={this.addBoard}>
+              <AddIcon/>
+            </Button>
           </div>
-        )}
-      </AuthConsumer>
-    )
+          <div className="boards-list">
+            <List component="nav">
+              { this.state.boards.map(board => this.renderListItems(board)) }
+            </List>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div></div>
+      )
+    }
   }
 }

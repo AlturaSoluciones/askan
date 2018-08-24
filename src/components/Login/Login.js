@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { auth } from '../../firebase';
 
 import * as firebase from 'firebase';
-import { AuthConsumer } from "../../components/Contexts/Protect";
 import * as routes from '../../constants/routes';
 
 export default class Login extends Component {
@@ -18,6 +17,12 @@ export default class Login extends Component {
       errorMessage: ''
     };
     this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.auth.isAuth) {
+      this.redirectCurrentPath();
+    }
   }
 
   handleTextFieldChange(event) {
@@ -41,7 +46,7 @@ export default class Login extends Component {
       });
   }
 
-  renderRedirect(){
+  redirectCurrentPath = () => {
     var currentPath = localStorage.getItem('currentPath');
     if (currentPath) {
       localStorage.removeItem('currentPath');
@@ -52,48 +57,41 @@ export default class Login extends Component {
   }
 
   render() {
-    return (
-       <AuthConsumer>
-        { ({ isAuth, toggleAuth, setUid } ) => (
-          <div className="loginContainer">
-          {!isAuth ? (
-            <div>
-            <Logo/>
-            <form className="loginForm">
-              <TextField
-                name="email"
-                className="loginInput"
-                required label="Email"
-                value={this.state.email}
-                onChange={this.handleTextFieldChange}
-              />
-              <TextField
-                name="password"
-                className="loginInput"
-                required label="Password"
-                value={this.state.password}
-                onChange={this.handleTextFieldChange}
-                type="password"
-              />
-              <Button variant="raised" className="loginButton" onClick={ () => this.handleLogin(toggleAuth, setUid) }>
-                Login
-              </Button>
-            </form>
-            <Link to="/signup" className="signupLink">Signup</Link>
-              <p>
-                {this.state.errorMessage}
-              </p>
-
-            </div>
-
-            ) : (
-                <div>
-                  {this.renderRedirect()}
-                </div>
-              )}
-          </div>
-        )}
-        </AuthConsumer>
-     )
+    if (!this.props.auth.isAuth) {
+      return (
+        <div className="loginContainer">
+          <Logo/>
+          <form className="loginForm">
+            <TextField
+              name="email"
+              className="loginInput"
+              required label="Email"
+              value={this.state.email}
+              onChange={this.handleTextFieldChange}
+            />
+            <TextField
+              name="password"
+              className="loginInput"
+              required label="Password"
+              value={this.state.password}
+              onChange={this.handleTextFieldChange}
+              type="password"
+            />
+            <Button variant="raised" className="loginButton" onClick={ () => this.handleLogin(this.props.auth.toggleAuth, this.props.auth.setUid) }>
+              Login
+            </Button>
+          </form>
+          <Link to="/signup" className="signupLink">Signup</Link>
+          <p> {this.state.errorMessage}  </p>
+        </div>
+      )
+    } else {
+      return (
+        <div className="loginContainer">
+          
+        </div>
+      )
+    }
+    
   }
 }

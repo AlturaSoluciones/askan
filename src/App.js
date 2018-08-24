@@ -7,7 +7,11 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Board  from "./components/Board/Board";
-import { AuthProvider } from "./components/Contexts/Protect";
+import { AuthProvider, withAuthConsumer } from "./components/Contexts/Protect";
+
+const authLogin = withAuthConsumer(Login);
+const authDashboard = withAuthConsumer(Dashboard);
+const authBoard = withAuthConsumer(Board);
 
 class App extends Component {
   render() {
@@ -15,10 +19,10 @@ class App extends Component {
       <AuthProvider>
         <Router>
           <Switch>
-            <Route exact path='/' component={Login} />
+            <Route exact path='/' component={authLogin} />
             <Route
               path='/login'
-              component={ Login }
+              component={ authLogin }
             />
             <Route
               path='/signup'
@@ -26,11 +30,11 @@ class App extends Component {
             />
             <Route
               path='/dashboard'
-              component={ Dashboard }
+              component={ authDashboard }
             />
             <Route
               path='/board/:board_id'
-              component={ Board }
+              component={ authBoard }
             />
           </Switch>
         </Router>

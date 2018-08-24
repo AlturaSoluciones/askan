@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './Board.css';
 import Logo from '../Logo/Logo'
 import { auth } from '../../firebase';
-import { AuthConsumer } from "../../components/Contexts/Protect";
 import { board } from '../../firebase';
 import { heap } from '../../firebase';
 
@@ -33,7 +32,7 @@ export default class Board extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let boardId = this.props.match.params.board_id;
     board.getById(boardId).then(r => {
       let board = r;
@@ -43,14 +42,14 @@ export default class Board extends Component {
         boardLists = heap.listHeaps(board.id).then(r => {
           boardLists = r;
           boardLists.map(list => list['isVisible'] = true);
-          this.setState({ boardLists })
+          this.setState({ boardLists });
+            if (!this.props.auth.isAuth){
+              localStorage.removeItem('currentPath');
+              this.props.history.push(routes.LANDING);
+            }
         })
       }
     });
-  }
-
-  componentDidMount() {
-    localStorage.setItem('currentPath', this.props.location.pathname);
   }
 
   handleLogout(toggleAuth, setUid) {
@@ -59,6 +58,7 @@ export default class Board extends Component {
         toggleAuth(false);
         setUid(null);
         localStorage.removeItem('uid');
+        localStorage.removeItem('currentPath');
         this.props.history.push(routes.LANDING);
       })
       .catch(error => {
@@ -113,10 +113,6 @@ export default class Board extends Component {
     boardLists[index] = edited;
     heap.updateHeap(board.id, edited.id, {name: newName}).then(r => this.setState({ boardLists }));
   };
-
-  renderRedirect() {
-    this.props.history.push(routes.LANDING);
-  }
 
   editListName = id => event => {
     let boardLists = this.state.boardLists;
@@ -180,47 +176,44 @@ export default class Board extends Component {
   }
 
   render() {
-    return (
-      <AuthConsumer>
-        {({isAuth, toggleAuth, setUid}) => (
-          <div className="root">
-            {isAuth ? (
-              <div>
-                <AppBar position="static">
-                  <Toolbar>
-                    <Logo/>
-                    <Button color="inherit" onClick={() => this.handleLogout(toggleAuth, setUid)}>Logout</Button>
-                  </Toolbar>
-                </AppBar>
-                <div className="boardHeader">
-                  { this.renderBoardHeaders() }
-                </div>
-                <div className="add-board">
-                  <TextField
-                    id="add-board-text"
-                    label="List Name"
-                    className="textField"
-                    value={this.state.new_item_name}
-                    onChange={this.handleChange}
-                    name='new_item_name'
-                    margin="normal"
-                  />
-                  <Button variant="fab" color="primary" aria-label="add" className="add-board-button"
-                          onClick={() => this.addList()}>
-                    <AddIcon/>
-                  </Button>
-                </div>
-
-                <div className="boards-list">
-                  { this.renderHeaps(board) }
-                </div>
+    if (this.props.auth.isAuth) {
+      return (
+        <div className="root">
+            <div>
+              <AppBar position="static">
+                <Toolbar>
+                  <Logo/>
+                  <Button color="inherit" onClick={() => this.handleLogout(this.props.auth.toggleAuth, this.props.auth.setUid)}>Logout</Button>
+                </Toolbar>
+              </AppBar>
+              <div className="boardHeader">
+                { this.renderBoardHeaders() }
               </div>
-            ) : (
-              <div>{this.renderRedirect()}</div>
-            )}
-          </div>
-        )}
-      </AuthConsumer>
-    )
+              <div className="add-board">
+                <TextField
+                  id="add-board-text"
+                  label="List Name"
+                  className="textField"
+                  value={this.state.new_item_name}
+                  onChange={this.handleChange}
+                  name='new_item_name'
+                  margin="normal"
+                />
+                <Button variant="fab" color="primary" aria-label="add" className="add-board-button"
+                        onClick={() => this.addList()}>
+                  <AddIcon/>
+                </Button>
+              </div>
+              <div className="boards-list">
+                { this.renderHeaps(board) }
+              </div>
+            </div>
+        </div>
+      )
+    } else {
+      return (
+        <div></div>
+      )
+    }
   }
 }
