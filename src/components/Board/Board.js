@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './Board.css';
-import Logo from '../Logo/Logo'
-import { auth } from '../../firebase';
+import Header from '../Header/Header'
 import { board } from '../../firebase';
 import { heap } from '../../firebase';
 
@@ -9,7 +8,6 @@ import * as routes from '../../constants/routes';
 
 // Material-UI imports
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -50,20 +48,6 @@ export default class Board extends Component {
         })
       }
     });
-  }
-
-  handleLogout(toggleAuth, setUid) {
-    auth.doSignOut()
-      .then(() => {
-        toggleAuth(false);
-        setUid(null);
-        localStorage.removeItem('uid');
-        localStorage.removeItem('currentPath');
-        this.props.history.push(routes.LANDING);
-      })
-      .catch(error => {
-        this.setState({errorMessage: error.message});
-      })
   }
 
   handleChange = event => {
@@ -181,10 +165,7 @@ export default class Board extends Component {
         <div className="root">
             <div>
               <AppBar position="static">
-                <Toolbar>
-                  <Logo/>
-                  <Button color="inherit" onClick={() => this.handleLogout(this.props.auth.toggleAuth, this.props.auth.setUid)}>Logout</Button>
-                </Toolbar>
+                <Header toggleAuth={ this.props.auth.toggleAuth } setUid= { this.props.auth.setUid } history={ this.props.history }/>
               </AppBar>
               <div className="boardHeader">
                 { this.renderBoardHeaders() }

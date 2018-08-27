@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
 import './Dashboard.css';
-import Logo from '../Logo/Logo'
-import { auth } from '../../firebase';
+import Header from '../Header/Header'
 import { board } from '../../firebase';
 
 import * as routes from '../../constants/routes';
 
 // Material-UI imports
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
@@ -54,19 +52,6 @@ export default class Dashboard extends Component {
           localStorage.removeItem('currentPath');
           this.renderRedirect();
         }
-  }
-
-  handleLogout(toggleAuth, setUid) {
-    auth.doSignOut()
-      .then(() => {
-        toggleAuth(false);
-        setUid(null);
-        localStorage.removeItem('uid');
-        this.props.history.push(routes.LANDING);
-      })
-      .catch(error => {
-        this.setState({errorMessage: error.message});
-      })
   }
 
   handleChange = name => event => {
@@ -168,10 +153,7 @@ export default class Dashboard extends Component {
       return (
         <div>
           <AppBar position="static">
-            <Toolbar>
-              <Logo/>
-              <Button color="inherit" onClick={() => this.handleLogout(this.props.auth.toggleAuth, this.props.auth.setUid)}>Logout</Button>
-            </Toolbar>
+            <Header toggleAuth={ this.props.auth.toggleAuth } setUid= { this.props.auth.setUid } history={ this.props.history }/>
           </AppBar>
           <div className="add-board">
             < TextField
