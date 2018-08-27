@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { auth } from '../../firebase';
 
 const AuthContext = React.createContext();
 
@@ -12,6 +13,9 @@ class AuthProvider extends Component {
     },
     setUid: (uid) => {
       this.setState({uid: uid})
+    },
+    logout: () => {
+      this.logout();
     }
   }
 
@@ -22,6 +26,19 @@ class AuthProvider extends Component {
 
   getAuthState(uid) {
     return uid != null
+  }
+
+  logout = () => {
+   auth.doSignOut()
+    .then(() => {
+      this.state.toggleAuth(false);
+      this.state.setUid(null);
+      localStorage.removeItem('uid');
+      localStorage.removeItem('currentPath');
+    })
+    .catch(error => {
+      console.log(error.message);
+    })
   }
 
   render() {

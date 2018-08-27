@@ -165,7 +165,7 @@ export default class Board extends Component {
         <div className="root">
             <div>
               <AppBar position="static">
-                <Header toggleAuth={ this.props.auth.toggleAuth } setUid= { this.props.auth.setUid } history={ this.props.history }/>
+                <Header auth={ this.props.auth } history={ this.props.history }/>
               </AppBar>
               <div className="boardHeader">
                 { this.renderBoardHeaders() }
