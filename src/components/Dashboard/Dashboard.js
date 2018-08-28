@@ -148,7 +148,7 @@ export default class Dashboard extends Component {
       return (
         <div>
           <AppBar position="static">
-            <Header auth={ this.props.auth } history={ this.props.history }/>
+            <Header auth={ this.props.auth } history={ this.props.history } hideDashboardButton={ true }/>
           </AppBar>
           <div className="add-board">
             < TextField

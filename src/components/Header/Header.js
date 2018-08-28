@@ -10,19 +10,24 @@ import Button from '@material-ui/core/Button';
 
 export default class Header extends Component {
  
- handleLogout = () => {
+  handleLogout = () => {
     this.props.auth.logout();
     this.props.history.push(routes.LANDING);
+  }
+
+  gotoDashboard = () => {
+    this.props.history.push(routes.DASHBOARD);
   }
 
   render() {
     
     return (
       <AppBar position="static">
-          <Toolbar>
-            <Logo/>
-            <Button color="inherit" onClick={ this.handleLogout }>Logout</Button>
-          </Toolbar>
+        <Toolbar>
+          <Logo/>
+          <Button color="inherit" onClick={ this.gotoDashboard } className={ this.props.hideDashboardButton ? 'hidden' : '' }>Dashboard</Button>
+          <Button color="inherit" onClick={ this.handleLogout }>Logout</Button>
+        </Toolbar>
       </AppBar>
     )
   }
