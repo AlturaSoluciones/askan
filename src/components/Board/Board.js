@@ -32,6 +32,7 @@ export default class Board extends Component {
 
   componentDidMount() {
     let boardId = this.props.match.params.board_id;
+    localStorage.setItem('currentPath', this.props.match.url);
     board.getById(boardId).then(r => {
       let board = r;
       this.setState({ board });
@@ -41,10 +42,11 @@ export default class Board extends Component {
           boardLists = r;
           boardLists.map(list => list['isVisible'] = true);
           this.setState({ boardLists });
-            if (!this.props.auth.isAuth){
-              localStorage.removeItem('currentPath');
-              this.props.history.push(routes.LANDING);
-            }
+          if (!this.props.auth.isAuth){
+            console.log('ss');
+            localStorage.removeItem('currentPath');
+            this.props.history.push(routes.LANDING);
+          }
         })
       }
     });

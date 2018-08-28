@@ -20,7 +20,7 @@ export default class Login extends Component {
   }
 
   componentDidMount() {
-    if (this.props.auth.isAuth) {
+    if (this.loginIfHasLocalParams()) {
       this.redirectCurrentPath();
     }
   }
@@ -56,6 +56,21 @@ export default class Login extends Component {
     }
   }
 
+  hasLocalParams = () => {
+    return !!(localStorage.getItem('uid') && localStorage.getItem('currentPath'));
+  }
+
+  loginIfHasLocalParams = () => {
+    if (this.hasLocalParams()){
+      this.props.auth.toggleAuth(true);
+      return true;
+    } else {
+      localStorage.removeItem('currentPath');
+      localStorage.removeItem('uid');
+      return false;
+    }
+  }
+
   render() {
     if (!this.props.auth.isAuth) {
       return (
@@ -87,11 +102,8 @@ export default class Login extends Component {
       )
     } else {
       return (
-        <div className="loginContainer">
-          
-        </div>
+        <div className="loginContainer"></div>
       )
     }
-    
   }
 }

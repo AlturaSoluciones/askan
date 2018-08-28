@@ -34,7 +34,7 @@ export default class Dashboard extends Component {
     if(!localUid){
       window.location.reload();  
     }
-    
+    localStorage.setItem('currentPath', this.props.match.url);
     this.setState({ uid: localUid }, () => {
       let boardList = null;
       board.listBoardsByOwner(localUid).then(r => {
@@ -47,11 +47,6 @@ export default class Dashboard extends Component {
         }
       });
     });
-    localStorage.setItem('currentPath', this.props.location.pathname);
-    if (!this.props.auth.isAuth){
-          localStorage.removeItem('currentPath');
-          this.renderRedirect();
-        }
   }
 
   handleChange = name => event => {
