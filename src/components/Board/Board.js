@@ -43,7 +43,6 @@ export default class Board extends Component {
           boardLists.map(list => list['isVisible'] = true);
           this.setState({ boardLists });
           if (!this.props.auth.isAuth){
-            console.log('ss');
             localStorage.removeItem('currentPath');
             this.props.history.push(routes.LANDING);
           }
