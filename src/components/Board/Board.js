@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './Board.css';
-import Header from '../Header/Header'
-import Task from '../Task/Task'
+import Header from '../Header/Header';
+import Task from '../Task/Task';
+import NewTask from '../Task/NewTask';
 import { board } from '../../firebase';
 import { heap } from '../../firebase';
 
@@ -41,6 +42,7 @@ export default class Board extends Component {
     let localBoard = await board.getById(boardId);
     let boardLists = this.buildBoardList(localBoard.heaps);
     boardLists.map(list => list['isVisible'] = true);
+    boardLists.map(list => list['showNewTask'] = false);
     this.setState({ boardLists, board: localBoard });
     if (!this.props.auth.isAuth){
       localStorage.removeItem('currentPath');
@@ -121,6 +123,10 @@ export default class Board extends Component {
     this.setState({ boardLists })
   };
 
+  addNewTask = () => {
+    this.buildElements();
+  }
+
   renderListItems = (list) => {
     if (list.isVisible) {
       return(
@@ -136,9 +142,14 @@ export default class Board extends Component {
               <ListItemText primary={list.name} className='titleList' />
             </div>
           </ListItem>
-          <div>
+          <div className='center'> TAREAS </div>
+          <div className='right'>
             { list.tasks.map(task => this.renderTask(task)) }
+            <IconButton aria-label="Add task" onClick={ () => this.showNewTask(list) }>
+              <div className='right'> <AddIcon/> </div>
+            </IconButton>
           </div>
+          <NewTask list={list} boardId={this.state.board.id} addNewTask={this.addNewTask}/>
         </div>
       );
     } else {
@@ -164,6 +175,15 @@ export default class Board extends Component {
       <Task key={ task.id } task={task} />
     )
   };
+
+  showNewTask = (list) => {
+    let boardLists = this.state.boardLists;
+    let editList = boardLists.find(function (obj) { return obj.id === list.id; });
+    let listIndex = boardLists.indexOf(editList);
+    editList['showNewTask'] = true;
+    boardLists[listIndex] = editList;
+    this.setState({ boardLists });
+  }
 
   renderHeaps = (board) => {
     let boardLists = [];
