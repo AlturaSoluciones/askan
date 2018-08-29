@@ -44,7 +44,8 @@ export const getById = (boardId) => {
           listBoards.push({
             id: child.key,
             ownerId: child.val().ownerId,
-            name: child.val().name
+            name: child.val().name,
+            heaps: child.val().heaps
           });
         }
       });

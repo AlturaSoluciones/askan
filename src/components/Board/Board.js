@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Board.css';
 import Header from '../Header/Header'
+import Task from '../Task/Task'
 import { board } from '../../firebase';
 import { heap } from '../../firebase';
 
@@ -31,24 +32,47 @@ export default class Board extends Component {
   }
 
   componentDidMount() {
+    this.buildElements();
+  }
+
+  buildElements = async () => {
     let boardId = this.props.match.params.board_id;
     localStorage.setItem('currentPath', this.props.match.url);
-    board.getById(boardId).then(r => {
-      let board = r;
-      this.setState({ board });
-      let boardLists = null;
-      if(board.id){
-        boardLists = heap.listHeaps(board.id).then(r => {
-          boardLists = r;
-          boardLists.map(list => list['isVisible'] = true);
-          this.setState({ boardLists });
-          if (!this.props.auth.isAuth){
-            localStorage.removeItem('currentPath');
-            this.props.history.push(routes.LANDING);
-          }
-        })
-      }
-    });
+    let localBoard = await board.getById(boardId);
+    let boardLists = this.buildBoardList(localBoard.heaps);
+    boardLists.map(list => list['isVisible'] = true);
+    this.setState({ boardLists, board: localBoard });
+    if (!this.props.auth.isAuth){
+      localStorage.removeItem('currentPath');
+      this.props.history.push(routes.LANDING);
+    }
+  }
+
+  buildBoardList = (heaps) => {
+    let _heaps = [];
+    if (heaps) {
+      _heaps = Object.keys(heaps).map(i => {
+        return {
+          id: i,
+          name: heaps[i].name,
+          tasks: this.buildTasks(heaps[i].tasks)
+        };
+      });
+    }
+    return _heaps;
+  }
+
+  buildTasks = (tasks) => {
+    let _tasks = [];
+    if (tasks) {
+      _tasks = Object.keys(tasks).map(i => {
+        return {
+          id: i,
+          description: tasks[i].description,
+        };
+      });
+    }
+    return _tasks;
   }
 
   handleChange = event => {
@@ -57,15 +81,10 @@ export default class Board extends Component {
     });
   };
 
-  addList = () => {
+  addList = async () => {
     let board = this.state.board;
-    heap.createHeap(board.id, this.state.new_item_name).then(r => console.log(r));
-    let boardLists = [];
-    boardLists = heap.listHeaps(board.id).then(r => {
-      boardLists = r;
-      boardLists.map(list => list['isVisible'] = true);
-      this.setState({ boardLists })
-    });
+    await heap.createHeap(board.id, this.state.new_item_name);
+    this.buildElements();
   };
 
   handleEdit = (id) => {
@@ -77,16 +96,10 @@ export default class Board extends Component {
     this.setState({ boardLists });
   };
 
-  handleDelete = (id) => {
+  handleDelete = async (id) => {
     let board = this.state.board;
-    heap.deleteHeap(board.id, id).then(r => {
-      let boardLists = [];
-      boardLists = heap.listHeaps(board.id).then(r => {
-        boardLists = r;
-        boardLists.map(list => list['isVisible'] = true);
-        this.setState({ boardLists })
-      });
-    });
+    await heap.deleteHeap(board.id, id);
+    this.buildElements();
   };
 
   handleSave = (id, newName) => {
@@ -123,6 +136,9 @@ export default class Board extends Component {
               <ListItemText primary={list.name} className='titleList' />
             </div>
           </ListItem>
+          <div>
+            { list.tasks.map(task => this.renderTask(task)) }
+          </div>
         </div>
       );
     } else {
@@ -143,6 +159,12 @@ export default class Board extends Component {
     } 
   }
 
+  renderTask = (task) => {
+    return (
+      <Task key={ task.id } task={task} />
+    )
+  };
+
   renderHeaps = (board) => {
     let boardLists = [];
     boardLists = this.state.boardLists;
@@ -158,7 +180,7 @@ export default class Board extends Component {
   
   renderBoardHeaders = () =>{
     return this.state.board && this.state.board.name;
-  }
+  };
 
   render() {
     if (this.props.auth.isAuth) {
