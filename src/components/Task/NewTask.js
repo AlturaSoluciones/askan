@@ -6,6 +6,7 @@ import { task } from '../../firebase';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import SaveIcon from '@material-ui/icons/Save';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 export default class NewTask extends Component {
   constructor(props) {
@@ -25,6 +26,10 @@ export default class NewTask extends Component {
     this.props.addNewTask();
   };
 
+  handleCancel = () => {
+    this.props.addNewTask();
+  };
+
   render() {
     let list = this.props.list;
     if (this.props.list.showNewTask) {
@@ -38,7 +43,8 @@ export default class NewTask extends Component {
             margin = 'normal'
           />
           <IconButton>
-              <SaveIcon onClick={() => this.handleSave(list.id, list.name)}/>
+            <CancelIcon onClick={() => this.handleCancel()}/>
+            <SaveIcon onClick={() => this.handleSave(list.id, list.name)}/>
           </IconButton>
         </div>
       )  
