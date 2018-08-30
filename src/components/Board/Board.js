@@ -127,6 +127,10 @@ export default class Board extends Component {
     this.buildElements();
   }
 
+  removeTask = () => {
+    this.buildElements();
+  }
+
   renderListItems = (list) => {
     if (list.isVisible) {
       return(
@@ -144,7 +148,7 @@ export default class Board extends Component {
           </ListItem>
           <div className='center'> TAREAS </div>
           <div className='right'>
-            { list.tasks.map(task => this.renderTask(task)) }
+            { list.tasks.map(task => this.renderTask(this.state.board.id, list.id, task)) }
             <IconButton aria-label="Add task" onClick={ () => this.showNewTask(list) }>
               <div className='right'> <AddIcon/> </div>
             </IconButton>
@@ -170,9 +174,9 @@ export default class Board extends Component {
     } 
   }
 
-  renderTask = (task) => {
+  renderTask = (boardId, listId, task) => {
     return (
-      <Task key={ task.id } task={task} />
+      <Task key={ task.id } boardId={boardId} listId={listId} task={task} removeTask={this.removeTask} />
     )
   };
 
