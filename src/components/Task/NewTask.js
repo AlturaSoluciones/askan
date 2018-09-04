@@ -22,8 +22,8 @@ export default class NewTask extends Component {
   }
 
   handleSave = () => {
-    let taskId = fbTask.createTask(this.props.boardId, this.props.list.id, this.state.description);
-    this.props.addTask({ id: taskId, description: this.state.description });
+    fbTask.createTask(this.props.boardId, this.props.list.id, this.state.description)
+          .then(r => this.props.addTask({ id: r, description: this.state.description }));
   };
 
   handleCancel = () => {
