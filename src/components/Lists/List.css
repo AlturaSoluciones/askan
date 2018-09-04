@@ -1,0 +1,8 @@
+.listContainer {
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  margin: 5px;
+  height: 400px !important;
+  width: 200px;
+}

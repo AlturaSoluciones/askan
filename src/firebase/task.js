@@ -14,7 +14,7 @@ export const createTask = (boardId, heapId, description) => {
       tasksRef.push({
         description: description
       }).then(result => {
-        resolve(true);
+        resolve(result.getKey());
       }).catch(err => {
         reject(false);
       });

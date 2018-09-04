@@ -12,7 +12,7 @@ export const createHeap = (boardId, name) => {
     heapRef.push({
       name: name
     }).then(result => {
-      resolve(true);
+      resolve(result.getKey());
     }).catch(err => {
       reject(false);
     });

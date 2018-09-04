@@ -15,20 +15,10 @@
 .boards-list {
   width: 100%;
   overflow-y: scroll;
-  height: 70%;
 }
 
 .list-nav {
   display: flex;
-}
-
-.listContainer {
-  border-style: solid;
-  border-color: black;
-  border-width: 1px;
-  margin: 5px;
-  height: 400px !important;
-  width: 200px;
 }
 
 .titleList {

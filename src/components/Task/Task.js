@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Task.css';
-import { task } from '../../firebase';
+import { task as fbTask } from '../../firebase';
 
 // Material-UI imports
 import IconButton from '@material-ui/core/IconButton';
@@ -16,8 +16,8 @@ export default class Task extends Component {
   }
 
   handleDelete = () => {
-    const { boardId, listId} = this.props;
-    task.deleteTask(boardId, listId, this.props.task.id).then(r => this.props.removeTask());
+    const { boardId, listId, task} = this.props;
+    fbTask.deleteTask(boardId, listId, task.id).then(r => this.props.removeTask(task.id));
   }
 
   render() {
