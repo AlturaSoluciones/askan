@@ -67,22 +67,7 @@ export default class Lists extends Component {
     if (this.state.arrayLists) {
       return (
         <div>
-          <div className="add-board">
-            <TextField
-              id="add-board-text"
-              label="List Name"
-              className="textField"
-              value={this.state.new_item_name}
-              onChange={this.handleChange}
-              name='new_item_name'
-              margin="normal"
-            />
-            <Button variant="fab" color="primary" aria-label="add" className="add-board-button"
-                    onClick={() => this.addList()}>
-              <AddIcon/>
-            </Button>
-          </div>
-
+          { this.renderActionForm() }
           <List component="nav" className="list-nav">
             { this.state.arrayLists &&
               this.state.arrayLists.map((list, idx) => <ListComp key={idx}
@@ -94,24 +79,19 @@ export default class Lists extends Component {
       </div>
       )
     } else {
-      return (
-          <div className="add-board">
-            <TextField
-              id="add-board-text"
-              label="List Name"
-              className="textField"
-              value={this.state.new_item_name}
-              onChange={this.handleChange}
-              name='new_item_name'
-              margin="normal"
-            />
-            <Button variant="fab" color="primary" aria-label="add" className="add-board-button"
-                    onClick={() => this.addList()}>
-              <AddIcon/>
-            </Button>
-          </div>
-        )
+      return this.renderActionForm() 
     }
+  }
+
+  renderActionForm() {
+    return (
+      <div className="add-board">
+        <TextField id="add-board-text" label="List Name" className="textField" value={this.state.new_item_name} onChange={this.handleChange} name='new_item_name' margin="normal" />
+        <Button variant="fab" color="primary" aria-label="add" className="add-board-button" onClick={() => this.addList()}>
+          <AddIcon />
+        </Button>
+      </div>
+    );
   }
 
   render() {
