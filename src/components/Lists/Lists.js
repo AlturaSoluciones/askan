@@ -86,7 +86,11 @@ export default class Lists extends Component {
   renderActionForm() {
     return (
       <div className="add-board">
-        <TextField id="add-board-text" label="List Name" className="textField" value={this.state.new_item_name} onChange={this.handleChange} name='new_item_name' margin="normal" />
+        <TextField id="add-board-text" label="List Name" className="textField"
+                   value={this.state.new_item_name}
+                   onChange={this.handleChange}
+                   name='new_item_name'
+                   margin="normal" />
         <Button variant="fab" color="primary" aria-label="add" className="add-board-button" onClick={() => this.addList()}>
           <AddIcon />
         </Button>

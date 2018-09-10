@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './List.css';
 import Task from '../Task/Task';
-import NewTask from '../Task/NewTask';
+import NewTask from '../Task/FormTask';
 
 import { heap } from '../../firebase';
 
@@ -73,11 +73,17 @@ export default class List extends Component {
 
   renderTask = (boardId, listId, task) => {
     return (
-      <Task key={ task.id } boardId={boardId} listId={listId} task={task} removeTask={this.removeTask} />
+      <Task key={ task.id }
+            boardId={boardId}
+            listId={listId}
+            task={task}
+            removeTask={this.removeTask}
+            isNew={false}
+      />
     )
   };
 
-  addTask = (task) => {
+  saveTask = (task) => {
     let tasks = this.state.tasks;
     if (task) {
       tasks.push(task);
@@ -96,7 +102,7 @@ export default class List extends Component {
     let list = this.state.list;
     if (this.state.showNewTask) {
       return (
-        <NewTask list={list} boardId={this.props.boardId} addTask={this.addTask}/>
+        <NewTask list={list} boardId={this.props.boardId} saveTask={this.saveTask} isNew={true}/>
       )
     } else {
       return (
