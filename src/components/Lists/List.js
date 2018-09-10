@@ -22,7 +22,6 @@ export default class List extends Component {
     this.state = {
       errorMessage: '',
       name: '',
-      list: this.props.list,
       tasks: this.buildTasks(this.props.list.tasks),
       showEdit: false,
       showNewTask: false
@@ -48,8 +47,8 @@ export default class List extends Component {
 
   handleDelete = () => {
     const {boardId, list} = this.props;
-    heap.deleteHeap(boardId, list.id);
-    this.props.handleDeleteLists(list.id);
+    heap.deleteHeap(boardId, list.id)
+        .then(r => this.props.handleDeleteLists(list.id));
   };
 
   showEdit = (name) => {
@@ -99,7 +98,7 @@ export default class List extends Component {
   }
 
   renderNewTask = () => {
-    let list = this.state.list;
+    let list = this.props.list;
     if (this.state.showNewTask) {
       return (
         <NewTask list={list} boardId={this.props.boardId} saveTask={this.saveTask} isNew={true}/>
@@ -114,7 +113,7 @@ export default class List extends Component {
   };
 
   render() {
-    let _list = this.state.list;
+    let _list = this.props.list;
     if (this.state.showEdit) {
       return(
         <div key={'l-' + _list.id} className="listContainer">

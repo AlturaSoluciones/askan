@@ -70,10 +70,16 @@ export default class Lists extends Component {
           { this.renderActionForm() }
           <List component="nav" className="list-nav">
             { this.state.arrayLists &&
-              this.state.arrayLists.map((list, idx) => <ListComp key={idx}
-                                                        list={list}
-                                                        boardId={this.props.board.id}
-                                                        handleDeleteLists={this.handleDeleteLists}/>)
+              this.state.arrayLists.map((list, idx) => 
+              {
+                return (
+                  <ListComp key={idx}
+                    list={list}
+                    boardId={this.props.board.id}
+                    handleDeleteLists={this.handleDeleteLists} />
+                );
+              }
+              )
             }
           </List>
       </div>
