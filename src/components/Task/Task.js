@@ -30,7 +30,6 @@ export default class Task extends Component {
   }
 
   toggleShowEdit = (showEdit) => {
-    console.log('ddddddddd');
     this.setState({ showEdit });
   }
 
