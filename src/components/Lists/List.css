@@ -1,7 +1,5 @@
 .listContainer {
-  border-style: solid;
-  border-color: black;
-  border-width: 1px;
   margin: 5px;
-  width: 200px;
+  min-width: 240px;
+  background: #DEE2E5;
 }

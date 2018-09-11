@@ -5,15 +5,18 @@
 }
 
 .boardHeader {
-    width: 100%;
-    margin: 20px auto;
-    text-align: left;
-    margin-left: 50px;
-    color: #3f51b5;
+  width: 100%;
+  text-align: left;
+  padding: 15px;
+  font-size: 23px;
+  color: #3f51b5;
+  background: #818B90;
 }
 
 .boards-list {
   width: 100%;
+  background: #818B90;
+  overflow-y: scroll;
 }
 
 .list-nav {

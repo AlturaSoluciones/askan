@@ -42,7 +42,33 @@ body {
 }
 
 .add-board {
-    margin-left: 25px;
+  margin-right: 10px;
+  position: absolute;
+  right: 0;
+  top: 83px;
+  width: 200px;
+  height: 50px !important;
+  background: #717A7E;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+
+.add-board .textField {
+  margin: 0;
+}
+
+.add-board label {
+  color: white;
+  margin-left: 5px;
+}
+
+.add-board > .add-board-button {
+  height: 30px !important;
+  margin: 5px;
+}
+
+.list-nav {
+  padding: 0 !important;
 }
 
 .textField {
@@ -51,13 +77,7 @@ body {
 
 .boardTextField {
     width: 400px;
-    
-}
 
-.add-board > .add-board-button {
-    margin-left: 10px;
-    width: 40px;
-    height: 40px;
 }
 
 .hidden {
