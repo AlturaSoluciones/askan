@@ -1,5 +1,26 @@
 .listContainer {
   margin: 5px;
   min-width: 240px;
+  max-width: 240px;
   background: #DEE2E5;
+}
+
+.listContainer button {
+  width: auto;
+  height: auto;
+  float: right;
+}
+
+.listContainer li {
+  display: inline-block;
+  border-bottom: 2px solid #7F8A8F;
+}
+
+.list-nav {
+  height: 100%;
+}
+
+.listTask {
+  height: 89%;
+  overflow: hidden auto;
 }

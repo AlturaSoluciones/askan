@@ -1,10 +1,6 @@
 .taskContainer {
-  width: 60%;
-  margin: 20px auto;
-  padding: 20px;
+  background: #FFFFFF;
+  min-height: 30px;
+  margin: 10px;
   text-align: left;
-
-  border-style: solid;
-  border-color: black;
-  border-width: 1px;
 }

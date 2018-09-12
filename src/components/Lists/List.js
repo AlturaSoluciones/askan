@@ -87,7 +87,7 @@ export default class List extends Component {
     if (task) {
       tasks.push(task);
     }
-    this.setState({ tasks, showNewTask: false });  
+    this.setState({ tasks, showNewTask: false });
   }
 
   removeTask = (taskId) => {
@@ -146,8 +146,7 @@ export default class List extends Component {
                 <ListItemText primary={_list.name} className='titleList' />
               </div>
             </ListItem>
-            <div className='center'> TAREAS </div>
-            <div className='right'>
+            <div className='listTask'>
               { this.state.tasks.map(task => this.renderTask(this.props.boardId, _list.id, task)) }
               { this.renderNewTask() }
             </div>
