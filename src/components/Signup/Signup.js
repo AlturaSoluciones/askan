@@ -4,7 +4,6 @@ import Logo from '../Logo/Logo'
 import { Button, TextField } from 'material-ui';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import { auth } from "../../firebase";
 import * as firebase from "firebase";
 import * as routes from "../../constants/routes";
