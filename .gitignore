@@ -26,3 +26,4 @@ yarn-error.log*
 
 #configurations
 src/firebase/firebase.js
+src/firebase/askan-e266b-firebase-adminsdk-95765-d7b335165e.json

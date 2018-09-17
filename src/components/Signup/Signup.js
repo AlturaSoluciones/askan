@@ -5,15 +5,14 @@ import { Button, TextField } from 'material-ui';
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { auth } from "../../firebase";
-import * as firebase from "firebase";
 import * as routes from "../../constants/routes";
 
 export default class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '', 
-      password: '', 
+      email: '',
+      password: '',
       passwordConfirmation: '',
       errorMessage: ''
     };
@@ -46,7 +45,7 @@ export default class Signup extends Component {
       return false;
     }
     return true;
-    
+
   }
 
    render() {
@@ -72,15 +71,15 @@ export default class Signup extends Component {
               />
                <TextField
                 name="passwordConfirmation"
-                className="signupInput" 
-                required 
+                className="signupInput"
+                required
                 label="Password Confirmation"
                 value={this.state.passwordConfirmation}
                 onChange={this.handleTextFieldChange}
                 type="password"
               />
-               <Button 
-                variant="raised" 
+               <Button
+                variant="raised"
                 className="signupButton"
                 onClick={this.handleSignup}
               >
