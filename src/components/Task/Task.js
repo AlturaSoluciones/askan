@@ -34,7 +34,11 @@ export default class Task extends Component {
   }
 
   saveTask = (task) => {
-    this.setState({ showEdit: false, task });
+    if (task) {
+      this.setState({ showEdit: false, task });
+    } else {
+      this.setState({ showEdit: false});
+    }
   }
 
   render() {
