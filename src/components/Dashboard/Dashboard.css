@@ -51,6 +51,7 @@ body {
   background: #717A7E;
   display: -ms-inline-flexbox;
   display: inline-flex;
+  z-index: 1;
 }
 
 .add-board .textField {
