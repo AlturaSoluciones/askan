@@ -8,6 +8,10 @@ import FormTask from './FormTask';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+// Card
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 export default class Task extends Component {
   constructor(props) {
@@ -56,12 +60,21 @@ export default class Task extends Component {
       )
     } else {
       return (
-        <div className='taskContainer'>
-          { this.state.task.description }
-          <IconButton>
-            <EditIcon onClick={() => this.toggleShowEdit(true)}/>
-            <DeleteIcon onClick={() => this.handleDelete()}/>
-          </IconButton>
+        <div>
+          <Card className='card'>
+            <CardContent>
+              <Typography variant="headline">
+                Descripción:
+              </Typography>
+              <Typography>
+                {this.state.task.description}
+              </Typography>
+              <IconButton>
+                <EditIcon onClick={() => this.toggleShowEdit(true)} />
+                <DeleteIcon onClick={() => this.handleDelete()} />
+              </IconButton>
+            </CardContent>
+          </Card>
         </div>
       )
     }

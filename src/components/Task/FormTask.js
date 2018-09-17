@@ -4,9 +4,12 @@ import { task as fbTask } from '../../firebase';
 
 // Material-UI imports
 import IconButton from '@material-ui/core/IconButton';
-import TextField from '@material-ui/core/TextField';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
+// Card
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 export default class FormTask extends Component {
   constructor(props) {
@@ -53,17 +56,21 @@ export default class FormTask extends Component {
     const { listId, isNew } = this.props;
     return (
       <div key={'nt-' + listId} className="taskContainer">
-        <TextField key={'tfnt-' + listId}
-          id={'list-id-' + listId}
-          className='taslTextField'
-          value={this.state.task.description}
-          onChange={this.handleChange}
-          margin = 'normal'
-        />
-        <IconButton>
-          <CancelIcon onClick={() => this.handleCancel()}/>
-          <SaveIcon onClick={() => this.handleSave(isNew)}/>
-        </IconButton>
+        <Card className='card'>
+          <CardContent>
+            <Typography variant="headline">
+              Descripción:
+              </Typography>
+            <textarea value={this.state.task.description}
+                      onChange={this.handleChange}
+                      rows='8'
+            />
+          </CardContent>
+          <IconButton>
+            <CancelIcon onClick={() => this.handleCancel()} />
+            <SaveIcon onClick={() => this.handleSave(isNew)} />
+          </IconButton>
+        </Card>
       </div>
     )  
   }

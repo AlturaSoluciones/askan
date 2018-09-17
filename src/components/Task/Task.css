@@ -4,3 +4,22 @@
   margin: 10px;
   text-align: left;
 }
+
+.card {
+  margin: 15px;
+}
+
+.bullet {
+  display: 'inline-block';
+  margin: '0 2px';
+  transform: 'scale(0.8)';
+}
+
+.bullettitle {
+  margin-bottom: 16;
+  font-size: 14;
+}
+
+.pos {
+  margin-bottom: 12;
+}
