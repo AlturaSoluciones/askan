@@ -6,6 +6,7 @@ import { task as fbTask } from '../../firebase';
 import IconButton from '@material-ui/core/IconButton';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
+import TextField from '@material-ui/core/TextField';
 // Card
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,61 +18,85 @@ export default class FormTask extends Component {
     this.state = {
       task: {
               id: '',
-              description: ''
+              description: '',
+              dueDate: ''
             },
-      isNew: false      
+      isNew: false
     }
   }
 
   componentDidMount() {
     if (this.props.task) {
       this.setState({ task: this.props.task });
+      
     }
   }
 
   handleChange = event => {
-    let task = {}
-    task.description = event.target.value;
+    let task = this.state.task;
+    task[event.target.name] = event.target.value;
     this.setState({ task });
   }
 
   handleSave = (isNew) => {
+    let task = this.state.task;
     if (isNew) {
-      fbTask.createTask(this.props.boardId, this.props.list.id, this.state.task.description)
-            .then(r => this.props.saveTask({ id: r, description: this.state.task.description }));
+      fbTask.createTask(this.props.boardId, this.props.list.id, task)
+            .then(r => {
+              task.id = r;
+              this.props.saveTask(task);
+            });
     } else {
-      let task = this.state.task;
       task.id = this.props.task.id;
       fbTask.updateTask(this.props.boardId, this.props.listId, task.id, task)
           .then(r => this.props.saveTask(task));
     }
-    
   };
 
   handleCancel = () => {
     this.props.saveTask(false);
   };
 
+  buildFormatDate = (isNew) => {
+    if (!isNew) {
+      return this.props.task.dueDate;
+    }
+  }
+
   render() {
-    const { listId, isNew } = this.props;
+    const { isNew } = this.props;
     return (
-      <div key={'nt-' + listId} className="taskContainer">
         <Card className='card'>
           <CardContent>
             <Typography variant="headline">
-              Descripción:
+              Description:
               </Typography>
             <textarea value={this.state.task.description}
                       onChange={this.handleChange}
+                      name="description"
                       rows='8'
+                      columns='10'
             />
+            <Typography variant="subheading">
+              Due date:
+            </Typography>
+            <TextField
+              id="dueDate"
+              name="dueDate"
+              type="date"
+              onChange={this.handleChange}
+              defaultValue={this.buildFormatDate(isNew)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+
           </CardContent>
           <IconButton>
             <CancelIcon onClick={() => this.handleCancel()} />
             <SaveIcon onClick={() => this.handleSave(isNew)} />
           </IconButton>
         </Card>
-      </div>
     )  
   }
 }

@@ -6,14 +6,12 @@ const boardsRef = dbRef.child('boards');
 
 // Create
 // task.createTask('-LJQ17b4nttv10t30I55','-LKXUt3NjIzer6jrNQpl', 'This is new task')
-export const createTask = (boardId, heapId, description) => {
+export const createTask = (boardId, heapId, task) => {
   return new Promise((resolve, reject) => {
     const heapsRef = boardsRef.child(boardId).child('heaps');
     const tasksRef= heapsRef.child(heapId).child('tasks');
     if (tasksRef){
-      tasksRef.push({
-        description: description
-      }).then(result => {
+      tasksRef.push(task).then(result => {
         resolve(result.getKey());
       }).catch(err => {
         reject(false);

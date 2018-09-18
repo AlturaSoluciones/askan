@@ -64,10 +64,17 @@ export default class Task extends Component {
           <Card className='card'>
             <CardContent>
               <Typography variant="headline">
-                Descripción:
+                Description:
               </Typography>
               <Typography>
                 {this.state.task.description}
+              </Typography>
+              <br/>
+              <Typography variant="subheading">
+                Due date:
+              </Typography>
+              <Typography>
+                {this.state.task.dueDate}
               </Typography>
               <IconButton>
                 <EditIcon onClick={() => this.toggleShowEdit(true)} />

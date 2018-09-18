@@ -35,6 +35,7 @@ export default class List extends Component {
         return {
           id: i,
           description: taskLists[i].description,
+          dueDate: taskLists[i].dueDate
         };
       });
     }
